@@ -3,11 +3,11 @@
  */
 import React from 'react'
 import classNames from 'classnames'
-
+import isEqual from 'lodash/isEqual'
 const PropTypes = React.PropTypes
 
 export default class VerifyButton extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       isSending: this.props.isSending,
@@ -30,11 +30,19 @@ export default class VerifyButton extends React.Component {
     isCanSend: () => true
   }
 
-  getIsSending() {
+  getIsSending () {
     return this.state.isSending
   }
 
-  componentWillUnmount() {
+  componentWillReceiveProps (nextProps) {
+    if (!isEqual(this.props, nextProps)) {
+      this.setState({
+        ...nextProps
+      })
+    }
+  }
+
+  componentWillUnmount () {
     clearInterval(this.timer)
   }
 
@@ -42,7 +50,9 @@ export default class VerifyButton extends React.Component {
     const {isCanSend, handleClick} = this.props
     if (!isCanSend()) return false
     let count = 60
-    handleClick()
+    if (!handleClick()) {
+      return
+    }
     this.setState({
       isSending: true,
       text: '60s后重发'
@@ -64,7 +74,7 @@ export default class VerifyButton extends React.Component {
     })
   }
 
-  render() {
+  render () {
     const {className} = this.props
     const {isSending, text} = this.state
     const cls = classNames({
