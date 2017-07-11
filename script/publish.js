@@ -14,23 +14,30 @@ let info = exec(`npm show ${pkg.name} version`, (err, stdout, stderr) => {
   latestVersion = stdout
 })
 
-if (isNeedPublish(nowVersion, latestVersion)) {
-  console.log(123)
-  playTag()
+isNeedPublish(nowVersion, latestVersion)
+  .then(boolean => {
+    boolean && playTag()
+  })
   .then(() => build())
   .then(() => publish())
   .catch(err => console.error(err))
-}
 
 function isNeedPublish(nowVersion, latestVersion) {
-  return semver.gt(nowVersion, latestVersion)
+  return new Promise((resolve, reject) => {
+    execCommand(`npm show ${pkg.name} version`)
+      .then(stdout => { latestVersion = stdout })
+      .then(() => resolve(semver.gt(nowVersion, latestVersion)))
+      .catch(err => reject(err))
+  })
 }
 function playTag() {
   return execCommand(`npm version ${nowVersion}`)
-  .then(() => execCommand(`git push origin ${nowVersion}`))
+    .then(() => execCommand(`git push origin ${nowVersion}`))
+    .catch(err => console.error(err))
 }
 function build() {
   return execCommand('npm run build')
+  .catch(err => console.error(err))
 }
 function publish() {
   return execCommand('npm publish')
