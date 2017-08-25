@@ -1,0 +1,31 @@
+@import 'utils';
+
+$prefixCls: NEUI;
+/**
+ * 变量命令规范：{组件}-{属性}-{类型}-{场景}
+ * 全局变量没有 {组件}
+ */
+$color_primary: #f8402f;
+$color_primary_tap: #e31300;
+$color_secondary: '';
+$color_secondary_top: '';
+
+$color_fill_body: #fff;
+
+$border_color_primary: #dddddd;
+$border_color_secondary: #e5e5e5;
+$border_color_error: #ff5533;
+
+$font_color_primary: #111111;
+$font_color_secondary: #999999;
+$font_color_highlight: #333333;
+$font_color_placeholder: #cccccc;
+
+$font_size_base: pxToRem(26);
+$font_size_heading: pxToRem();
+$font_size_subhead: '';
+
+$font_size_display_sm: '';
+$font_size_display_mid: '';
+$font_size_display_lg: '';
+$font_size_display_xl: '';
